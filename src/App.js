@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import cors from "cors";
 import "./App.css";
+import styled from 'styled-components';
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -9,7 +11,7 @@ function App() {
   const [description, setDescription] = useState("");
   const [published_date, setPublished_date] = useState("");
   const [number_of_pages, setNumber_of_pages] = useState(0);
-  const [publisher, setpublisher] = useState("");
+  const [publisher, setPublisher] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3000/")
@@ -46,8 +48,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <form onSubmit={saveStudentToDatabase}>
+    <main className="App">
+      <FormWrapper onSubmit={saveStudentToDatabase}>
         <label htmlFor="title">Title:</label>
         <input
           type="text"
@@ -69,7 +71,7 @@ function App() {
           required
           value={isbn}
           onChange={(event) => {
-            setIsbn(Number(event.target.value));
+            setIsbn(event.target.value);
           }}
         ></input>
         <label htmlFor="author">Author:</label>
@@ -80,10 +82,10 @@ function App() {
           placeholder="Author"
           value={author}
           onChange={(event) => {
-            setAuthor(Number(event.target.value));
+            setAuthor(event.target.value);
           }}
         ></input>
-        <label htmlFor="description">description:</label>
+        <label htmlFor="description">Description:</label>
         <input
           type="text"
           id="description"
@@ -91,7 +93,7 @@ function App() {
           placeholder="Description"
           value={description}
           onChange={(event) => {
-            description(Number(event.target.value));
+            setDescription(event.target.value);
           }}
         ></input>
         <label htmlFor="published_date">Published Date:</label>
@@ -102,10 +104,10 @@ function App() {
           placeholder="Published Date"
           value={published_date}
           onChange={(event) => {
-            published_date(Number(event.target.value));
+            setPublished_date(event.target.value);
           }}
         ></input>
-        <label htmlFor="number_of_pages">number_of_pages:</label>
+        <label htmlFor="number_of_pages">Number of pages:</label>
         <input
           type="number"
           id="number_of_pages"
@@ -113,7 +115,7 @@ function App() {
           placeholder="Number of pages"
           value={number_of_pages}
           onChange={(event) => {
-            number_of_pages(Number(event.target.value));
+            setNumber_of_pages(Number(event.target.value));
           }}
         ></input>
         <label htmlFor="publisher">Publisher:</label>
@@ -124,14 +126,14 @@ function App() {
           placeholder="Publisher"
           value={publisher}
           onChange={(event) => {
-            publisher(Number(event.target.value));
+            setPublisher(event.target.value);
           }}
         ></input>
         <button>Save</button>
-      </form>
-      <ul>
+      </FormWrapper>
+      <ListWrapper>
         {books.map((book) => (
-          <li key={book._id}>
+          <ListItems key={book._id}>
             <h2>Title: {book.title}</h2>
             <p>ISBN: {book.isbn}</p>
             <p>Author: {book.author}</p>
@@ -139,11 +141,30 @@ function App() {
             <p>Published Date: {book.published_date}</p>
             <p>Number of pages: {book.number_of_pages}</p>
             <p>Publisher: {book.publisher}</p>
-          </li>
+          </ListItems>
         ))}
-      </ul>
-    </div>
+      </ListWrapper>
+    </main>
   );
 }
+
+
+
+const FormWrapper = styled.form `
+display: flex;
+flex-direction: column;
+align-items: center;
+flex-wrap: wrap;
+gap: 0.5rem;
+`
+const ListWrapper = styled.ul`
+display: flex;
+flex-direction: column;
+`
+
+const ListItems = styled.li `
+margin: 2rem 0;
+list-style: none;
+`
 
 export default App;
